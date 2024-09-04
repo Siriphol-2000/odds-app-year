@@ -1,0 +1,17 @@
+<%= form_with model: @user,local:true do |form| %>
+  <div>
+    <%= form.label :first_name %><br>
+    <%= form.text_field :first_name %>
+
+  </div>
+
+  <div>
+    <%= form.label :last_name %><br>
+    <%= form.text_area :last_name %><br>
+   
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
