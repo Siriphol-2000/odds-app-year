@@ -2,8 +2,10 @@
 <ul>
   <% @users.each do |user| %>
     <li>
-      <%= user.first_name %>
+      <%= link_to  user.first_name, user%>
     </li>
   <% end %>
 </ul>
 <p>Find me in app/views/users/index.html.erb</p>
+<%= link_to "Create User", new_user_path%>
+
