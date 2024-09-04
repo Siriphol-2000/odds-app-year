@@ -38,13 +38,13 @@
         <div class="input-field">
           <%= form.label :gender, "Gender" %>
           <div class="radio-group">
-            <span> 
-              <%= form.radio_button :gender, 'male', id: "gender-male" %>
-              <%= form.label :gender_male, "Male", for: "gender-male" %>
+            <span class="radio-flex"> 
+              <span><%= form.radio_button :gender, 'male', id: "gender-male" %></span>
+              <span><%= form.label :gender_male, "Male", for: "gender-male" %></span>
             </span>
-            <span> 
-              <%= form.radio_button :gender, 'female', id: "gender-female" %>
-              <%= form.label :gender_female, "Female", for: "gender-female" %>
+            <span class="radio-flex"> 
+              <span><%= form.radio_button :gender, 'female', id: "gender-female" %></span>
+             <span> <%= form.label :gender_female, "Female", for: "gender-female" %></span>
             </span>
           </div>
           <% if @user.errors[:gender].any? %>
