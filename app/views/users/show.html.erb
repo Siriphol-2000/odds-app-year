@@ -3,13 +3,36 @@
 <h1>
 User details   
 </h1>
-<%=@user.first_name%><br>
-<%=@user.last_name%><br>
-<%=@user.birthday%><br>
-<%=@user.gender%><br>
+
+<span><%=@user.first_name%></span>
+<span><%=@user.last_name%></span>
+<br>
+<span>birthdate</span>
+<span>
+<%=@user.birthday%>
+</span>
+<br>
+
+<span>gender</span>
+<span><%=@user.gender%><br></span>
+<span>email</span>
+<span>
 <%=@user.email%><br>
-<%=@user.phone%><br>
+
+</span>
+<span>phone number</span>
+<span>
+    <%=@user.phone%><br>
+</span>
+<span>enrolled subject</span>
+<span>
 <%=@user.subject%><br>
+
+</span>
+
+
+
+
 <%= link_to"edit",edit_user_path,class: "button-link"%><br>
 <%= link_to "home",root_path,class: "button-link" %><br>
 
