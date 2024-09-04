@@ -3,6 +3,9 @@
     padding: 0;
     font-family: Arial, sans-serif;
 }
+h1{
+    padding-bottom: 1rem;
+}
 
 .background {
     background-color: #a83d3d; /* Background color */
@@ -21,6 +24,7 @@
     margin: 5rem;
 }
 
+
 #name-field,
 #DoB-gender,
 #contact-info {
@@ -31,10 +35,12 @@
 
 .input-field {
     display: flex;
-    flex-direction: column; /* Stack label and input vertically */
-    flex: 1; /* Allow fields to grow and shrink equally */
-    margin-right: 1rem; /* Space between fields */
+    flex-direction: column;
+    flex: 1;
+    margin-right: 1rem;
+    min-width: 0; /* Allow input fields to shrink if necessary */
 }
+
 
 .input-field:last-child {
     margin-right: 0; /* Remove margin for the last item in the row */
@@ -93,4 +99,22 @@ button:hover {
 
 #subject-submit {
     margin-bottom: 1rem; /* Space below subject-submit section */
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.is-invalid {
+    border-color: red;
+    background-color: #fdd;
+}
+
+
+.error-message {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
 }

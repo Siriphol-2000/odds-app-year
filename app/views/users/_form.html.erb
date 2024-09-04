@@ -2,50 +2,95 @@
   <div class="form-container">
     <%= form_with model: @user, local: true do |form| %>
       <h1>Register Form</h1>
+      
       <section id="name-field">
-        <div class="input-field">
+            <div class="input-field">
           <%= form.label :first_name, "First Name" %>
-          <%= form.text_field :first_name, placeholder: "Enter your first name" %>
+          <%= form.text_field :first_name, placeholder: "Enter your first name", class: "form-control #{'is-invalid' if @user.errors[:first_name].any?}" %>
+          <% if @user.errors[:first_name].any? %>
+            <div class="error-message">
+              <%= @user.errors[:first_name].first %>
+            </div>
+          <% end %>
         </div>
         <div class="input-field">
           <%= form.label :last_name, "Last Name" %>
-          <%= form.text_field :last_name, placeholder: "Enter your last name" %>
+          <%= form.text_field :last_name, placeholder: "Enter your last name", class: "form-control #{'is-invalid' if @user.errors[:last_name].any?}" %>
+          <% if @user.errors[:last_name].any? %>
+            <div class="error-message">
+              <%= @user.errors[:last_name].first %>
+            </div>
+          <% end %>
         </div>
       </section>
+      
       <section id="DoB-gender">
         <div class="input-field">
           <%= form.label :birthday, "Date of Birth" %>
-          <%= form.date_field :birthday %>
+          <%= form.date_field :birthday, class: "form-control #{'is-invalid' if @user.errors[:birthday].any?}" %>
+          <% if @user.errors[:birthday].any? %>
+            <div class="error-message">
+              <%= @user.errors[:birthday].first %>
+            </div>
+          <% end %>
         </div>
         <div class="input-field">
           <%= form.label :gender, "Gender" %>
           <div class="radio-group">
-            <span> <%= form.radio_button :gender, 'male', id: "gender-male" %></span>
-            <span> <%= form.label :gender_male, "Male", for: "gender-male" %></span>
-            <span> <%= form.radio_button :gender, 'female', id: "gender-female" %></span>
-            <span> <%= form.label :gender_female, "Female", for: "gender-female" %></span>
+            <span> 
+              <%= form.radio_button :gender, 'male', id: "gender-male" %>
+              <%= form.label :gender_male, "Male", for: "gender-male" %>
+            </span>
+            <span> 
+              <%= form.radio_button :gender, 'female', id: "gender-female" %>
+              <%= form.label :gender_female, "Female", for: "gender-female" %>
+            </span>
           </div>
+          <% if @user.errors[:gender].any? %>
+            <div class="error-message">
+              <%= @user.errors[:gender].first %>
+            </div>
+          <% end %>
         </div>
       </section>
+      
       <section id="contact-info">
         <div class="input-field">
           <%= form.label :email, "Email" %>
-          <%= form.email_field :email, placeholder: "Enter your email" %>
+          <%= form.email_field :email, placeholder: "Enter your email", class: "form-control #{'is-invalid' if @user.errors[:email].any?}" %>
+          <% if @user.errors[:email].any? %>
+            <div class="error-message">
+              <%= @user.errors[:email].first %>
+            </div>
+          <% end %>
         </div>
         <div class="input-field">
           <%= form.label :phone, "Phone Number" %>
-          <%= form.telephone_field :phone, placeholder: "Enter your phone number" %>
+          <%= form.telephone_field :phone, placeholder: "Enter your phone number", class: "form-control #{'is-invalid' if @user.errors[:phone].any?}" %>
+          <% if @user.errors[:phone].any? %>
+            <div class="error-message">
+              <%= @user.errors[:phone].first %>
+            </div>
+          <% end %>
         </div>
       </section>
+      
       <section id="subject-submit">
         <div class="input-field">
           <%= form.label :subject, "Subject" %>
-          <%= form.select :subject, options_for_select([["General Inquiry", "general"], ["Support", "support"], ["Feedback", "feedback"]]) %>
+          <%= form.select :subject, options_for_select([["General Inquiry", "general"], ["Support", "support"], ["Feedback", "feedback"]]), {}, { class: "form-control #{'is-invalid' if @user.errors[:subject].any?}" } %>
+          <% if @user.errors[:subject].any? %>
+            <div class="error-message">
+              <%= @user.errors[:subject].first %>
+            </div>
+          <% end %>
         </div>
       </section>
+      
       <div class="input-field">
         <%= form.submit "Submit" %>
       </div>
+      
     <% end %>
   </div>
 </div>
