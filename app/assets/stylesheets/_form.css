@@ -1,29 +1,7 @@
- *{
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
+
 h1{
     padding-bottom: 1rem;
 }
-
-.background {
-    background-color: #a83d3d; /* Background color */
-    display: flex;
-    justify-content: center;
-    align-items: center;    
-    height: 100vh; /* Full height of the viewport */
-}
-
-.form-container {
-    background-color: white; /* White background for the form */
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 600px; /* Adjusted width to fit the fields in a row */
-    margin: 5rem;
-}
-
 
 #name-field,
 #DoB-gender,

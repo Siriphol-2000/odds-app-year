@@ -1,11 +1,14 @@
+<div class="background">
+<div class="form-container">
 <h1>Users#index</h1>
 <ul>
   <% @users.each do |user| %>
     <li>
-      <%= link_to  user.first_name, user%>
+      <%= link_to  "#{user.first_name}  #{user.last_name}" , user%>
     </li>
   <% end %>
 </ul>
-<p>Find me in app/views/users/index.html.erb</p>
 <%= link_to "Create User", new_user_path%>
 
+</div>
+</div>
