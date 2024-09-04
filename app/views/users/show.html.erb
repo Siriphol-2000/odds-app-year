@@ -1,8 +1,10 @@
+<%=stylesheet_link_tag('show')%>
 <div class="background">
   <div class="form-container">
     <h1>
       User details   
     </h1>
+    <div class="user-info-list">
     <span><%=@user.first_name%></span>
     <span><%=@user.last_name%></span>
     <br>
@@ -26,8 +28,11 @@
     <span>
       <%=@user.subject%><br>
     </span>
-    <%= link_to"edit",edit_user_path,class: "button-link"%><br>
+    </div>
+    <div class="button-bar">
     <%= link_to "home",root_path,class: "button-link" %><br>
-    <%= button_to "delete ", @user, method: :delete %>
+    <%= link_to"edit",edit_user_path,class: "button-link"%><br>
+    <%= button_to "delete ", @user, method: :delete,class: "button-link" %>
+    </div>
   </div>
 </div>
