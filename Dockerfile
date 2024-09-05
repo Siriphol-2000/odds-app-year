@@ -4,22 +4,21 @@
 ARG RUBY_VERSION=3.3.1
 FROM ruby:$RUBY_VERSION-alpine as base
 
-# Install dependencies
-RUN apk update && \
-    apk add --no-cache build-base git libvips-dev pkgconf
-
-# Rails app lives here
+# Set working directory
 WORKDIR /rails
 
-# Set production environment
+# Set environment variables for production
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development test" \
-    SECRET_KEY_BASE_DUMMY="1"
+    BUNDLE_WITHOUT="development test"
 
 # Build Stage 2: Dependencies and precompile assets
 FROM base as build
+
+# Install packages needed to build gems and precompile assets
+RUN apk update && \
+    apk add --no-cache build-base git libvips-dev pkgconf
 
 # Install gems
 COPY Gemfile Gemfile.lock ./
@@ -36,14 +35,15 @@ RUN bundle exec bootsnap precompile app/ lib/ && \
 FROM base as production
 
 # Install necessary packages for running the app
-RUN apk add --no-cache curl libsqlite3 sqlite-libs
+RUN apk update && \
+    apk add --no-cache curl libsqlite3 libvips-dev
 
 # Copy built gems and precompiled assets from build stage
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
 
 # Create and switch to non-root user for security
-RUN adduser -D -g '' rails && \
+RUN adduser -D -s /bin/sh rails && \
     chown -R rails:rails /rails/db /rails/log /rails/storage /rails/tmp
 USER rails
 
