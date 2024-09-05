@@ -1,8 +1,8 @@
 # syntax = docker/dockerfile:1
 
-# Build Stage 1: Base image with Ruby (Alpine)
+# Build Stage 1: Base image with Ruby
 ARG RUBY_VERSION=3.3.1
-FROM ruby:$RUBY_VERSION-alpine as base
+FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
 # Rails app lives here
 WORKDIR /rails
@@ -18,7 +18,8 @@ ENV RAILS_ENV="production" \
 FROM base as build
 
 # Install packages needed to build gems and precompile assets
-RUN apk add --no-cache build-base git vips-dev
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential git libvips pkg-config
 
 # Install gems
 COPY Gemfile Gemfile.lock ./
@@ -32,17 +33,19 @@ RUN bundle exec bootsnap precompile app/ lib/ && \
     ./bin/rails assets:precompile
 
 # Build Stage 3: Final production-ready image
-FROM ruby:$RUBY_VERSION-alpine as production
+FROM base as production
 
 # Install necessary packages for running the app
-RUN apk add --no-cache curl sqlite-libs vips
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y curl libsqlite3-0 libvips && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built gems and precompiled assets from build stage
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
 
 # Create and switch to non-root user for security
-RUN adduser -D rails && \
+RUN useradd -m -s /bin/bash rails && \
     chown -R rails:rails /rails/db /rails/log /rails/storage /rails/tmp
 USER rails
 
