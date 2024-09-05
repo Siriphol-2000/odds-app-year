@@ -2,29 +2,29 @@
 <div class="background">
   <div class="form-container">
     <h1>
-      User details   
+      User Info   
     </h1>
     <div class="user-info-list">
     <span><%=@user.first_name%></span>
     <span><%=@user.last_name%></span>
     <br>
-    <span>birthdate</span>
+    <span class="info-label">birthdate</span>
     <span>
       <%=@user.birthday%>
     </span>
     <br>
-    <span>gender</span>
+    <span class="info-label">gender</span>
     <span><%=@user.gender%><br>
     </span>
-    <span>email</span>
+    <span class="info-label">email</span>
     <span>
       <%=@user.email%><br>
     </span>
-    <span>phone number</span>
+    <span class="info-label">phone number</span>
     <span>
       <%=@user.phone%><br>
     </span>
-    <span>enrolled subject</span>
+    <span class="info-label">enrolled subject</span>
     <span>
       <%=@user.subject%><br>
     </span>
