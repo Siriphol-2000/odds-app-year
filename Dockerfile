@@ -18,7 +18,11 @@ FROM base AS build
 
 # Install packages needed to build gems and precompile assets
 RUN apk update && \
-    apk add --no-cache build-base git libvips-dev pkgconf
+    apk add --no-cache \
+        build-base \
+        git \
+        vips-dev \
+        pkgconf
 
 # Install gems
 COPY Gemfile Gemfile.lock ./
@@ -36,7 +40,10 @@ FROM base AS production
 
 # Install necessary packages for running the app
 RUN apk update && \
-    apk add --no-cache curl libsqlite3 libvips-dev
+    apk add --no-cache \
+        curl \
+        sqlite-libs \
+        vips-dev
 
 # Copy built gems and precompiled assets from build stage
 COPY --from=build /usr/local/bundle /usr/local/bundle
