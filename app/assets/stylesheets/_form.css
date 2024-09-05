@@ -100,3 +100,33 @@ button:hover {
     display: flex;
     align-items: center;
 }
+@media (max-width: 320px) {
+    .form-container {
+        max-width: 100%; /* Make form container full-width */
+        padding: 10px; /* Reduce padding for small screens */
+    }
+
+    h1 {
+        font-size: 1rem; /* Adjust the heading size for very small screens */
+    }
+
+    .input-field label {
+        font-size: 0.8rem; /* Even smaller label font size */
+    }
+
+    .input-field input,
+    .input-field select,
+    button {
+        font-size: 0.75rem; /* Reduce font size for inputs and buttons */
+        padding: 6px; /* Smaller padding for inputs */
+    }
+
+    .radio-flex {
+        margin-bottom: 0.25rem; /* Reduce space between radio options */
+    }
+
+    button {
+        padding: 6px 10px; /* Reduce button size for small screens */
+        font-size: 0.8rem; /* Smaller button text */
+    }
+}
