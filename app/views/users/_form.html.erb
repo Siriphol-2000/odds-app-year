@@ -8,20 +8,24 @@
             <div class="input-field">
           <%= form.label :first_name, "First Name" %>
           <%= form.text_field :first_name, placeholder: "Enter your first name", class: "form-control #{'is-invalid' if @user.errors[:first_name].any?}" %>
-          <% if @user.errors[:first_name].any? %>
             <div class="error-message">
+          <% if @user.errors[:first_name].any? %>
+              <div class="error-message">
               <%= @user.errors[:first_name].first %>
             </div>
           <% end %>
         </div>
+        </div>
         <div class="input-field">
           <%= form.label :last_name, "Last Name" %>
           <%= form.text_field :last_name, placeholder: "Enter your last name", class: "form-control #{'is-invalid' if @user.errors[:last_name].any?}" %>
-          <% if @user.errors[:last_name].any? %>
             <div class="error-message">
+          <% if @user.errors[:last_name].any? %>
+          <div class="error-message">
               <%= @user.errors[:last_name].first %>
             </div>
           <% end %>
+        </div>
         </div>
       </section>
       
@@ -29,11 +33,13 @@
         <div class="input-field">
           <%= form.label :birthday, "Date of Birth" %>
           <%= form.date_field :birthday, class: "form-control #{'is-invalid' if @user.errors[:birthday].any?}" %>
-          <% if @user.errors[:birthday].any? %>
             <div class="error-message">
+          <% if @user.errors[:birthday].any? %>
+          <div class="error-message">
               <%= @user.errors[:birthday].first %>
             </div>
           <% end %>
+        </div>
         </div>
         <div class="input-field">
           <%= form.label :gender, "Gender" %>
@@ -47,11 +53,14 @@
              <span> <%= form.label :gender_female, "Female", for: "gender-female" %></span>
             </span>
           </div>
-          <% if @user.errors[:gender].any? %>
+
             <div class="error-message">
+          <% if @user.errors[:gender].any? %>
+             <div class="error-message">
               <%= @user.errors[:gender].first %>
             </div>
           <% end %>
+        </div>
         </div>
       </section>
       
@@ -59,32 +68,38 @@
         <div class="input-field">
           <%= form.label :email, "Email" %>
           <%= form.email_field :email, placeholder: "Enter your email", class: "form-control #{'is-invalid' if @user.errors[:email].any?}" %>
-          <% if @user.errors[:email].any? %>
             <div class="error-message">
+          <% if @user.errors[:email].any? %>
+             <div class="error-message">
               <%= @user.errors[:email].first %>
             </div>
           <% end %>
         </div>
+        </div>
         <div class="input-field">
           <%= form.label :phone, "Phone Number" %>
           <%= form.telephone_field :phone, placeholder: "Enter your phone number", class: "form-control #{'is-invalid' if @user.errors[:phone].any?}" %>
-          <% if @user.errors[:phone].any? %>
             <div class="error-message">
+          <% if @user.errors[:phone].any? %>
+                 <div class="error-message">
               <%= @user.errors[:phone].first %>
             </div>
           <% end %>
+        </div>
         </div>
       </section>
       
       <section id="subject-submit">
         <div class="input-field">
           <%= form.label :subject, "Subject" %>
-          <%= form.select :subject, options_for_select([["General Inquiry", "general"], ["Support", "support"], ["Feedback", "feedback"]]), {}, { class: "form-control #{'is-invalid' if @user.errors[:subject].any?}" } %>
-          <% if @user.errors[:subject].any? %>
+          <%= form.select :subject, options_for_select([["Dota2 101", "dota2 101"], ["Rov basic laning", "Rov basic laning"], ["Deadlock tactic", "Deadlock tactic"]]), {}, { class: "form-control #{'is-invalid' if @user.errors[:subject].any?}" } %>
             <div class="error-message">
+          <% if @user.errors[:subject].any? %>
+             <div class="error-message"> 
               <%= @user.errors[:subject].first %>
             </div>
           <% end %>
+        </div>
         </div>
       </section>
       

@@ -24,7 +24,7 @@ h1{
     margin-right: 0; /* Remove margin for the last item in the row */
 }
 
-.input-field label {
+.input-field label , .field_with_errors{
     margin-bottom: 1rem; /* Space between label and input */
     font-weight: bold;
 }
@@ -35,7 +35,7 @@ h1{
     border-radius: 4px;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    background-color: #f0f0f0; /* Change this to your preferred input background color */
+    background-color: #fafafa; /* Change this to your preferred input background color */
     color: #333; /* Change this to your preferred text color */
 }
 
@@ -95,6 +95,7 @@ button:hover {
     color: red;
     font-size: 0.875rem;
     margin-top: 0.25rem;
+    min-height: 16px;
 }
 .radio-flex{
     display: flex;
@@ -129,4 +130,5 @@ button:hover {
         padding: 6px 10px; /* Reduce button size for small screens */
         font-size: 0.8rem; /* Smaller button text */
     }
+
 }
