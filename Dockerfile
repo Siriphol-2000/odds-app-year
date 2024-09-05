@@ -2,7 +2,7 @@
 
 # Build Stage 1: Base image with Ruby and Alpine
 ARG RUBY_VERSION=3.3.1
-FROM ruby:$RUBY_VERSION-alpine as base
+FROM ruby:$RUBY_VERSION-alpine AS base
 
 # Set working directory
 WORKDIR /rails
@@ -14,7 +14,7 @@ ENV RAILS_ENV="production" \
     BUNDLE_WITHOUT="development test"
 
 # Build Stage 2: Dependencies and precompile assets
-FROM base as build
+FROM base AS build
 
 # Install packages needed to build gems and precompile assets
 RUN apk update && \
@@ -32,7 +32,7 @@ RUN bundle exec bootsnap precompile app/ lib/ && \
     ./bin/rails assets:precompile
 
 # Build Stage 3: Final production-ready image
-FROM base as production
+FROM base AS production
 
 # Install necessary packages for running the app
 RUN apk update && \
