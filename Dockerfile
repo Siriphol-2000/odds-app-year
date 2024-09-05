@@ -32,6 +32,8 @@ RUN bundle install --jobs 4 --retry 3 && \
 
 # Copy application code and precompile assets
 COPY . .
+ARG SECRET_KEY_BASE
+ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
 RUN bundle exec bootsnap precompile app/ lib/ && \
     ./bin/rails assets:precompile
 
