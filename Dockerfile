@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
+# Build Stage 1: Base image with Ruby
 ARG RUBY_VERSION=3.3.1
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
@@ -11,52 +11,45 @@ WORKDIR /rails
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+    BUNDLE_WITHOUT="development test" \
+    SECRET_KEY_BASE_DUMMY="1"
 
-
-# Throw-away build stage to reduce size of final image
+# Build Stage 2: Dependencies and precompile assets
 FROM base as build
 
-# Install packages needed to build gems
+# Install packages needed to build gems and precompile assets
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libvips pkg-config
 
-# Install application gems
+# Install gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+RUN bundle install --jobs 4 --retry 3 && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}/ruby/*/cache" "${BUNDLE_PATH}/ruby/*/bundler/gems/*/.git" && \
     bundle exec bootsnap precompile --gemfile
 
-# Copy application code
+# Copy application code and precompile assets
 COPY . .
+RUN bundle exec bootsnap precompile app/ lib/ && \
+    ./bin/rails assets:precompile
 
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
+# Build Stage 3: Final production-ready image
+FROM base as production
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-
-
-# Final stage for app image
-FROM base
-
-# Install packages needed for deployment
+# Install necessary packages for running the app
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libsqlite3-0 libvips && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Copy built artifacts: gems, application
+# Copy built gems and precompiled assets from build stage
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
 
-# Run and own only the runtime files as a non-root user for security
-RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
-USER rails:rails
+# Create and switch to non-root user for security
+RUN useradd -m -s /bin/bash rails && \
+    chown -R rails:rails /rails/db /rails/log /rails/storage /rails/tmp
+USER rails
 
-# Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-
-# Start the server by default, this can be overwritten at runtime
+# Expose port 3000 and set entrypoint and command
 EXPOSE 3000
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 CMD ["./bin/rails", "server"]
