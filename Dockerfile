@@ -1,13 +1,13 @@
 # syntax = docker/dockerfile:1
 
-# Build Stage 1: Base image with Ruby (Alpine)
-ARG RUBY_VERSION=3.3.3
-FROM ruby:${RUBY_VERSION}-alpine as base
+# Build Stage 1: Base image with Ruby
+ARG RUBY_VERSION=3.3.1
+FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
-# Set the working directory inside the container
+# Rails app lives here
 WORKDIR /rails
 
-# Set production environment variables
+# Set production environment
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
@@ -18,37 +18,38 @@ ENV RAILS_ENV="production" \
 FROM base as build
 
 # Install packages needed to build gems and precompile assets
-RUN apk add --no-cache build-base git libvips-dev curl
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential git libvips pkg-config
 
-# Install application gems
+# Install gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
+RUN bundle install --jobs 4 --retry 3 && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}/ruby/*/cache" "${BUNDLE_PATH}/ruby/*/bundler/gems/*/.git" && \
     bundle exec bootsnap precompile --gemfile
 
-# Copy application code
+# Copy application code and precompile assets
 COPY . .
-
-# Precompile assets for production
 RUN bundle exec bootsnap precompile app/ lib/ && \
-    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+    ./bin/rails assets:precompile
 
 # Build Stage 3: Final production-ready image
 FROM base as production
 
 # Install necessary packages for running the app
-RUN apk add --no-cache curl libvips postgresql-client
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y curl libsqlite3-0 libvips && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Copy built gems and application code from build stage
+# Copy built gems and precompiled assets from build stage
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
 
 # Create and switch to non-root user for security
-RUN adduser -D rails && \
+RUN useradd -m -s /bin/bash rails && \
     chown -R rails:rails /rails/db /rails/log /rails/storage /rails/tmp
 USER rails
 
 # Expose port 3000 and set entrypoint and command
 EXPOSE 3000
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
+CMD ["./bin/rails", "server"]
