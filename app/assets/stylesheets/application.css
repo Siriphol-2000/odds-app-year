@@ -51,4 +51,6 @@ padding-bottom: 2rem;
     background-color: #e0e0e0; /* Slightly darker background color when focused */
 
   }
-  
+  .index-button{
+    padding-top: 1rem;
+  }
