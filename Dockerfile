@@ -1,55 +1,55 @@
-# syntax = docker/dockerfile:1
+# syntax=docker/dockerfile:1
 
-# Build Stage 1: Base image with Ruby
-ARG RUBY_VERSION=3.3.1
-FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+# Build Stage: Dependencies and Precompile Assets
+FROM ruby:3.3.1-alpine AS builder
 
-# Rails app lives here
-WORKDIR /rails
+# Install required packages
+RUN apk add --no-cache build-base nodejs yarn tzdata libxml2-dev libxslt-dev
 
-# Set production environment
-ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development test" \
-    SECRET_KEY_BASE_DUMMY="1"
+# Set the working directory
+WORKDIR /app
 
-# Build Stage 2: Dependencies and precompile assets
-FROM base as build
-
-# Install packages needed to build gems and precompile assets
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libvips pkg-config
-
-# Install gems
+# Copy the Gemfile and Gemfile.lock
 COPY Gemfile Gemfile.lock ./
-RUN bundle install --jobs 4 --retry 3 && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}/ruby/*/cache" "${BUNDLE_PATH}/ruby/*/bundler/gems/*/.git" && \
-    bundle exec bootsnap precompile --gemfile
 
-# Copy application code and precompile assets
+# Install Bundler and gems
+RUN gem install bundler -v 2.5.18 && \
+    bundle config set --local without 'development test' && \
+    bundle install --jobs 4 --retry 3
+
+# Copy the rest of the application
 COPY . .
-RUN bundle exec bootsnap precompile app/ lib/ && \
-    ./bin/rails assets:precompile
 
-# Build Stage 3: Final production-ready image
-FROM base as production
+# Set dummy secret key base for asset precompilation
+ENV SECRET_KEY_BASE=dummy_secret_key
 
-# Install necessary packages for running the app
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libsqlite3-0 libvips && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+# Precompile assets
+RUN bundle exec rails assets:precompile
 
-# Copy built gems and precompiled assets from build stage
-COPY --from=build /usr/local/bundle /usr/local/bundle
-COPY --from=build /rails /rails
+# Production Stage: Minimal Final Image
+FROM ruby:3.3.1-alpine
 
-# Create and switch to non-root user for security
-RUN useradd -m -s /bin/bash rails && \
-    chown -R rails:rails /rails/db /rails/log /rails/storage /rails/tmp
-USER rails
+# Install runtime dependencies (minimal set)
+RUN apk add --no-cache libxml2 libxslt nodejs tzdata
 
-# Expose port 3000 and set entrypoint and command
+# Set working directory
+WORKDIR /app
+
+# Copy files from the build stage
+COPY --from=builder /app /app
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+
+# Create a non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup && \
+    chown -R appuser:appgroup /app
+USER appuser
+
+# Expose the app on port 3000
 EXPOSE 3000
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-CMD ["./bin/rails", "server"]
+
+# Set environment variables for production
+ENV RAILS_ENV=production
+
+# Command to run database migrations and start the Rails server
+CMD ["sh", "-c", "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0"]
+
