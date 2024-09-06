@@ -2,7 +2,7 @@
 <div class="background">
   <div class="form-container">
     <%= form_with model: @user, local: true do |form| %>
-      <h1>Register Form</h1>
+      <h1><%= @user.new_record? ? 'Register Form' : 'Edit Form' %></h1>
       
       <section id="name-field">
             <div class="input-field">
