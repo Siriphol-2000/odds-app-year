@@ -1,7 +1,7 @@
 <%=stylesheet_link_tag('_form')%>
 <div class="background">
   <div class="form-container">
-    <%= form_with model: @user, local: true do |form| %>
+    <%= form_with model: @user, html: { novalidate: true } , local: true do |form| %>
       <h1><%= @user.new_record? ? 'Register Form' : 'Edit Form' %></h1>
       
       <section id="name-field">
@@ -32,7 +32,7 @@
       <section id="DoB-gender">
         <div class="input-field">
           <%= form.label :birthday, "Date of Birth" %>
-          <%= form.date_field :birthday, class: "form-control #{'is-invalid' if @user.errors[:birthday].any?}" %>
+          <%= form.date_field :birthday, class: "form-control #{'is-invalid' if @user.errors[:birthday].any?}", max: 18.year.ago.to_date %>
             <div class="error-message">
           <% if @user.errors[:birthday].any? %>
           <div class="error-message">
