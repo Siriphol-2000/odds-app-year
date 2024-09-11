@@ -32,7 +32,7 @@
     <div class="button-bar">
     <%= link_to "home",root_path,class: "button-link" %><br>
     <%= link_to"edit",edit_user_path,class: "button-link"%><br>
-    <%= button_to "delete ", @user, method: :delete,class: "button-link" %>
+    <%= button_to "delete ", @user, method: :delete,class: "button-link",data: { turbo_method: 'delete', turbo_confirm: "Are you sure?" } %>
     </div>
   </div>
 </div>
