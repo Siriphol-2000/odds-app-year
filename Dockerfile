@@ -4,7 +4,7 @@
 FROM ruby:3.3.1-alpine AS builder
 
 # Install required packages
-RUN apk add --no-cache build-base nodejs yarn tzdata libxml2-dev libxslt-dev
+RUN apk add --no-cache build-base tzdata libxml2-dev libxslt-dev
 
 # Set the working directory
 WORKDIR /app
@@ -30,7 +30,7 @@ RUN bundle exec rails assets:precompile
 FROM ruby:3.3.1-alpine
 
 # Install runtime dependencies (minimal set)
-RUN apk add --no-cache libxml2 libxslt nodejs tzdata
+RUN apk add --no-cache libxml2 libxslt tzdata
 
 # Set working directory
 WORKDIR /app
