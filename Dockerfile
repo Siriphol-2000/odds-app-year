@@ -30,7 +30,7 @@ RUN bundle exec rails assets:precompile
 FROM ruby:3.3.1-alpine
 
 # Install runtime dependencies (minimal set)
-RUN apk add --no-cache libxml2 libxslt tzdata
+RUN apk add --no-cache libxml2 libxslt tzdata 
 
 # Set working directory
 WORKDIR /app

@@ -1,0 +1,2 @@
+module StimulusDemosHelper
+end

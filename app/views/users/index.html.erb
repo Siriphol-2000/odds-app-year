@@ -1,7 +1,6 @@
 <div class="background">
   <div class="form-container">
     <h1>Users List</h1>
-
     <% if @users.any? %>
       <ul>
         <% @users.each do |user| %>
@@ -13,8 +12,9 @@
     <% else %>
       <p>No users found.</p>
     <% end %>
-<div class="index-button">
-    <%= link_to "Create User", new_user_path, class: "button-link" %>
-</div>
+    <div class="index-button">
+      <%= link_to "Create User", new_user_path, class: "button-link" %>
+    </div>
+
   </div>
 </div>
