@@ -1,0 +1,10 @@
+ <button data-controller="modal" data-action="modal#show" data-modal-dialog-param="contact_details_modal">
+  Show contact details
+</button>
+<dialog id="contact_details_modal" aria-labelledby="modal_title" data-controller="modal">
+  <header>
+    <h2 id="modal_title">Contact details</h2>
+    <button aria-label="close" data-action="click->modal#close">X</button>
+  </header>
+  <p>Lorem ipsum dolor sit amet...</p>
+</dialog>
