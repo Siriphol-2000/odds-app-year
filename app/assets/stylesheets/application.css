@@ -86,3 +86,33 @@ input:focus, select:focus {
     background-color: #e0e0e0; /* Slightly darker background color when focused */
 }
 
+/* General reset for buttons and links to ensure consistency */
+.button-link, 
+button {
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    font-family: inherit; /* Ensures same font as the rest of the page */
+    cursor: pointer;
+}
+
+.button-link:hover,
+button:hover {
+    border-color: #007BFF;
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+}
+
+.button-link:focus,
+button:focus {
+    border-color: #007BFF;
+    background-color: #e0e0e0;
+    outline: none; /* Removes the default browser outline */
+}
+
+/* To apply different styling on specific button types, you can target them directly if needed */

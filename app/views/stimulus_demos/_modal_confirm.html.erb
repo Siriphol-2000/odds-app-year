@@ -1,10 +1,14 @@
- <button data-controller="modal" data-action="modal#show" data-modal-dialog-param="contact_details_modal">
-  Show contact details
+<%=stylesheet_link_tag('_modal')%>
+<button data-controller="modal" data-action="modal#show" data-modal-dialog-param="contact_details_modal">
+  Delete
 </button>
 <dialog id="contact_details_modal" aria-labelledby="modal_title" data-controller="modal">
-  <header>
-    <h2 id="modal_title">Contact details</h2>
-    <button aria-label="close" data-action="click->modal#close">X</button>
+  <header class="modal-header">
+    <h2 id="modal_title">Are you sure?</h2>
+   
   </header>
-  <p>Lorem ipsum dolor sit amet...</p>
+  <div class="modal-content">
+     <button aria-label="close" data-action="click->modal#close" class="modal-close-button">no</button>
+     <%= button_to "Delete", @user, method: :delete, class: "button-link", data: { turbo_method: 'delete', turbo_confirm: "Are you sure?" } %>
+  </div>
 </dialog>
