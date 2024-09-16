@@ -9,6 +9,6 @@
   </header>
   <div class="modal-content">
      <button aria-label="close" data-action="click->modal#close" class="modal-close-button">no</button>
-     <%= button_to "Delete", @user, method: :delete, class: "button-link", data: { turbo_method: 'delete', turbo_confirm: "Are you sure?" } %>
+     <%= button_to "Delete", @user, method: :delete, class: "button-link", data: { turbo_method: 'delete' } %>
   </div>
 </dialog>
