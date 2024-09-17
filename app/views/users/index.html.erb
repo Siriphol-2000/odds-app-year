@@ -1,4 +1,6 @@
+<%=stylesheet_link_tag('application')%>
 <div class="background">
+
   <div class="form-container">
     <h1>Users List</h1>
     <% if @users.any? %>
@@ -13,7 +15,8 @@
       <p>No users found.</p>
     <% end %>
     <div class="index-button">
-      <%= link_to "Create User", new_user_path, class: "button-link" %>
+      <%= render partial: "stimulus_demos/modal_form", var: @var%>
+      <%# <%= link_to "Create User", new_user_path, class: "button-link" %> 
     </div>
 
   </div>

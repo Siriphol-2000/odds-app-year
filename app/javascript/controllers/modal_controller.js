@@ -10,4 +10,5 @@ export default class extends Controller {
     const dialog = this.element;
     dialog.close();
   }
+  
 }

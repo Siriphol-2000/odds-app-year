@@ -1,0 +1,103 @@
+/* Modal dialog styles */
+dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-width: 50%;
+    max-height: 90%;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+  
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  dialog[open] {
+    animation: fade-in 0.3s ease-out;
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -60%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  /* Form container styles */
+  .form-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Form field styles */
+  .input-field {
+    margin-bottom: 15px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Section styles */
+  section {
+    margin-bottom: 20px;
+  }
+  
+  /* Radio group styles */
+  .radio-group {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .radio-flex {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  /* Submit button styles */
+  input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    dialog {
+      width: 95%;
+      max-width: 50%;
+    }
+  }
+  .is-invalid {
+    border-color: red;
+    background-color: #fdd;
+}
+
+
+.error-message {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    min-height: 16px;
+}

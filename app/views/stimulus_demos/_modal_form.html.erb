@@ -1,0 +1,74 @@
+<%= stylesheet_link_tag('_form_modal') %>
+<button data-controller="modal" data-action="modal#show" data-modal-dialog-param="contact_details_modal">create</button>
+<dialog id="contact_details_modal" aria-labelledby="modal_title" data-controller="modal">
+  <div class="form-container">
+    <%= form_with model: @user ,url: users_path, method: :post  ,html: { novalidate: true }, local: true do |form| %>
+      <h1>Register Form</h1> <!-- Changed here -->
+      
+
+      
+      <section id="name-field">
+        <div class="input-field">
+          <%= form.label :first_name, "First Name" %>
+          <%= form.text_field :first_name, placeholder: "Enter your first name", class: "form-control" %>
+       
+        </div>
+        <div class="input-field">
+          <%= form.label :last_name, "Last Name" %>
+          <%= form.text_field :last_name, placeholder: "Enter your last name", class: "form-control" %>
+       
+        </div>
+      </section>
+
+      <section id="DoB-gender">
+        <div class="input-field">
+          <%= form.label :birthday, "Date of Birth" %>
+          <%= form.date_field :birthday, class: "form-control", max: 18.year.ago.to_date %>
+       
+        </div>
+        <div class="input-field">
+          <%= form.label :gender, "Gender" %>
+          <div class="radio-group">
+            <span class="radio-flex"> 
+              <span><%= form.radio_button :gender, 'male', id: "gender-male" %></span>
+              <span><%= form.label :gender_male, "Male", for: "gender-male" %></span>
+            </span>
+            <span class="radio-flex"> 
+              <span><%= form.radio_button :gender, 'female', id: "gender-female" %></span>
+              <span><%= form.label :gender_female, "Female", for: "gender-female" %></span>
+            </span>
+          </div>
+
+  
+        </div>
+      </section>
+
+      <section id="contact-info">
+        <div class="input-field">
+          <%= form.label :email, "Email" %>
+          <%= form.email_field :email, placeholder: "Enter your email", class: "form-control" %>
+        
+        </div>
+
+        <div class="input-field">
+          <%= form.label :phone, "Phone Number" %>
+          <%= form.telephone_field :phone, placeholder: "Enter your phone number", class: "form-control " %>
+       
+        </div>
+      </section>
+
+      <section id="subject-submit">
+        <div class="input-field">
+          <%= form.label :subject, "Subject" %>
+          <%= form.select :subject, options_for_select([["Dota2 101", "dota2 101"], ["Rov basic laning", "Rov basic laning"], ["Deadlock tactic", "Deadlock tactic"]]), {}, { class: "form-control  " } %> 
+       
+        </div> 
+      </section>
+
+      <div class="input-field">
+        <%= form.submit "Submit" %> 
+      </div>
+
+    <% end %> 
+  </div> 
+</dialog>
